@@ -42,6 +42,8 @@ const initState = () => {
         for (let k = 0; k < cols; k++)
             matrix[j][k] = null;
 
+    // step count kinullázása
+    stepCount = 0;
 }
 
 /**
@@ -110,9 +112,10 @@ akkor beállítja a 0-t, hiszen a másik játékos azzal fog tenni egy jelet,
 ha pedig a 0-t használtuk, beállítja az X-et.
 */
 const setMark = () => {
-    if (mark === 'X')
+    if (mark === 'X') 
         mark = '0';
     else mark = 'X';
+    setMessage('Next player: ' + mark);
 }
 
 /**
@@ -166,8 +169,7 @@ akkor a 0 vagy az X győzött.
 Ha valaki győzött, akkor pl. egy ilyen tömböt kapunk: [true, false, false]
 */
 const checkValues = (array) => array.map(
-    row => row.every(item => item === 'X') || row.every(item => item === '0')
-)
+    row => row.every(item => item === 'X') || row.every(item => item === '0'))
     .indexOf(true) !== -1;
 /*
 Ha true-t kapunk visza adott sorra, akkor 
@@ -205,6 +207,7 @@ const checkWinner = () => {
     a checkValues(matrix) vagy a checkColumnValues() vagy a checkDiagonalValues() igaz.
     */
     if (checkValues(matrix) || checkColumnValues() || checkDiagonalValues()) endGame();
+    else if(stepCount == 9) setMessage('Draw. Start a new game.');
 }
 
 /**
